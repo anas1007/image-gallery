@@ -19,9 +19,22 @@
                             @foreach ($albums as $album)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $album->id }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $album->title }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a class="text-blue-400 font-semibold hover:text-blue-800" href="{{ route('albums.show', $album->id) }}">
+                                        {{ $album->title }}
+                                    </a>
+                                </td>
 
-                                <td class="px-6 py-4 text-right text-sm">Manage</td>
+                                <td class="px-6 py-4 text-right text-sm">
+                                    <div class="flex justify-center">
+                                        <a href="{{ route('albums.edit', $album->id) }}" class="py-1 px-4 text-lg text-white bg-green-500 hover:bg-green-700 rounded-lg mr-2">Edit</a>
+                                        <form method="POST" action="{{ route('albums.destroy', $album->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-button class="servicedeletebtn bg-red-500 hover:bg-red-700 rounded-lg">Delete</x-button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
 
@@ -33,4 +46,20 @@
         </div>
 
     </div>
+
+
 </x-app-layout>
+
+
+
+<!-- @section('scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+   
+        $('.servicedeletebtn').on('click', function() {
+            alert('Hello');
+        });
+
+</script>
+
+@endsection -->
