@@ -18,6 +18,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($albums as $album)
                             <tr>
+                                <input type="hidden" class="serdelete_val_id" value="{{ $album->id }}">
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $album->id }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <a class="text-blue-400 font-semibold hover:text-blue-800" href="{{ route('albums.show', $album->id) }}">
@@ -52,14 +53,54 @@
 
 
 
-<!-- @section('scripts')
+@section('scripts')
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
-   
-        $('.servicedeletebtn').on('click', function() {
-            alert('Hello');
+    $(document).ready(function() {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        $('.servicedeletebtn').click(function(e) {
+            e.preventDefault();
+
+            var delete_id = $(this).closest("tr").find('.serdelete_val_id').val();
+            // alert(delete_id);
+
+            swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this Data!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                        var data = {
+                            "_token" => $('input[name="csrf-token"]').val(),
+                        };
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/servise-cate-delete/" + delete_id,
+                            data: "data",
+                            success: function(response) {
+
+                            }
+                        });
+
+                        swal("Poof! Your data has been deleted!", {
+                            icon: "success",
+                        });
+                    }
+                });
+
         });
-
+    });
 </script>
-
-@endsection -->

@@ -50,7 +50,8 @@ class AlbumController extends Controller
      */
     public function show(Album $album)
     {
-        return view('albums.show', compact('album'));
+        $photos = $album->getMedia();
+        return view('albums.show', compact('album', 'photos'));
     }
 
     /**
@@ -97,6 +98,23 @@ class AlbumController extends Controller
         if($request->has('image')){
             $album->addMedia($request->image)->toMediaCollection();
         }
+        return redirect()->back();
+    }
+
+    public function showImage(Album $album, $id)
+    {
+        $media = $album->getMedia();
+        $image = $media->where('id', $id)->first();
+        
+        return view('albums.image-show', compact('album', 'image'));
+    }
+
+    public function destroyImage(Album $album, $id)
+    {
+        $media = $album->getMedia();
+        $image = $media->where('id', $id)->first();
+        $image->delete();
+
         return redirect()->back();
     }
 }
