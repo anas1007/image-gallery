@@ -117,4 +117,11 @@ class AlbumController extends Controller
 
         return redirect()->back();
     }
+
+    public function delete($album)
+    {
+        $albums = Album::findOrFail($album);
+        $albums->delete();
+        return response()->json(['status'=>'Album Deleted Successfully']);
+    }
 }

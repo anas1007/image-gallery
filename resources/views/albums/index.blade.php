@@ -84,20 +84,24 @@
                     if (willDelete) {
 
                         var data = {
-                            "_token" => $('input[name="csrf-token"]').val(),
+                            "_token": $('input[name="csrf-token"]').val(),
+                            "id": delete_id,
                         };
                         $.ajax({
                             type: "DELETE",
-                            url: "/servise-cate-delete/" + delete_id,
-                            data: "data",
+                            url: '/albums/' + delete_id,
+                            data: data,
                             success: function(response) {
-
+                                swal(response.status, {
+                                        icon: "success",
+                                    })
+                                    .then((result) => {
+                                        location.reload();
+                                    });
                             }
                         });
 
-                        swal("Poof! Your data has been deleted!", {
-                            icon: "success",
-                        });
+
                     }
                 });
 
